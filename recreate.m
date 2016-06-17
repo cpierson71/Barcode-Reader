@@ -1,16 +1,6 @@
 function newRow = recreate(estModules,modWidth)
 
-for k = 1:length(estModules)
-    switch mod(estModules(k)*modWidth,modWidth)
-        case 1
-            estModules(k) = estModules(k) - .25;
-        case 2
-            estModules(k) = estModules(k) - .5;
-        case 3
-            estModules(k) = estModules(k) + .25;
-        otherwise
-    end
-end
+estModules = round(estModules);
 
 height = 200;
 newRow = ones(height,sum(estModules));

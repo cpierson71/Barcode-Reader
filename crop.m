@@ -1,8 +1,5 @@
 function img = crop(img)
 
-img = imread('bcImg.jpg');
-img = im2bw(img,.7);
-
 [rows,cols] = size(img);
 
 for k = rows:-1:1
