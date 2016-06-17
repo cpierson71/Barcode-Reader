@@ -1,3 +1,5 @@
+function message = translate(alignedCode)
+
 message = [];
 count = 0;
 digitLength = 7;
@@ -8,6 +10,9 @@ modCode = modCode(4:end-3); %Trim start and end markers
 N = length(modCode);
 
 idx = findMiddleMarker(modCode);
+
+% Find the index that is most likely to be the beginning of the middle
+% marker (in the middle of the string).
 minIdxDiff = N+1;
 midIdx = 0;
 for k = 1:length(idx)
@@ -28,9 +33,10 @@ for k = 1:length(modCode)
     end
 end
 
-%%
-% Left numerical digits
-for k = 1:midIdx/digitLength
+numStrR = numStr(midIdx+5:end);
+
+%% Left numerical digits
+for k = 1:(midIdx/digitLength)
     count = count + 1;
     switch numStr(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
         case '1110010'
@@ -56,15 +62,12 @@ for k = 1:midIdx/digitLength
         otherwise
             message(count) = NaN;
     end
-    k
 end
 
-%%
-count = 0;
-% Right numerical digit
-for k = midIdx+4:length(modCode)
+%% Right numerical digit
+for k = 1:(midIdx/digitLength)
     count = count + 1;
-    switch numStr(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
+    switch numStrR(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
         case '0001101'
             message(count) = 0;
         case '0011001'
@@ -88,4 +91,6 @@ for k = midIdx+4:length(modCode)
         otherwise
             message(count) = NaN;
     end
+end
+
 end

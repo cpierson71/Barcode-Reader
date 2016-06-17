@@ -7,7 +7,7 @@ for j = length(modStr):-1:1
     end
 end
 
-idx = regexp(modStr,'10101');
+idx = strfind(modStr,'10101');
 
 %imshow(alignedCode), hold on, plot(idx(2),1:length(alignedCode),'r')
 
