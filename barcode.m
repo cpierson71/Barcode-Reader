@@ -1,12 +1,9 @@
 % function message = barcode(imgStr)
-
-imgStr = 'upc5.jpg';
+imgStr = 'upc1.jpg';
 
 img = imread(imgStr);
 img = im2bw(img,.7);
 img = crop(img);
-
-
 
 %% Find index of start marker of barcode
 pxlThresh = 50;
@@ -32,7 +29,6 @@ figure
 imshow(alignedCode)
 
 %% Read the code
-message = translate(alignedCode);
-
+message = translate(alignedCode)
 
 % end

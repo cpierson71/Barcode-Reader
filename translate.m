@@ -6,10 +6,27 @@ digitLength = 7;
 middleLength = 5;
 
 modCode = alignedCode(1,:);
-modCode = modCode(4:end-3); %Trim start and end markers
-N = length(modCode);
+% if modCode(1) == 1
+%    modCode = modCode(2:end); 
+% end
 
-idx = findMiddleMarker(modCode);
+for k = 1:length(modCode)
+    numStr = num2str(modCode);
+    for j = length(numStr):-1:1
+        if (numStr(j) == ' ')
+            numStr(j) = [];
+        end
+    end
+end
+
+startIdx = strfind(numStr,'010');
+startIdx = min(startIdx);
+numStr = numStr(startIdx+3:end-3);
+
+% modCode = modCode(4:end-3); %Trim start and end markers
+N = length(numStr);
+
+idx = strfind(numStr,'10101');
 
 % Find the index that is most likely to be the beginning of the middle
 % marker (in the middle of the string).
@@ -23,15 +40,15 @@ for k = 1:length(idx)
     end
 end
 
-% Remove spaces from string
-for k = 1:length(modCode)
-    numStr = num2str(modCode);
-    for j = length(numStr):-1:1
-        if (numStr(j) == ' ')
-            numStr(j) = [];
-        end
-    end
-end
+% % Remove spaces from string
+% for k = 1:length(modCode)
+%     numStr = num2str(modCode);
+%     for j = length(numStr):-1:1
+%         if (numStr(j) == ' ')
+%             numStr(j) = [];
+%         end
+%     end
+% end
 
 numStrR = numStr(midIdx+5:end);
 
@@ -64,9 +81,13 @@ for k = 1:(midIdx/digitLength)
     end
 end
 
+length(numStrR)
+
 %% Right numerical digit
 for k = 1:(midIdx/digitLength)
     count = count + 1;
+%     digitLength*(k-1)+1
+    digitLength*(k-1) + digitLength
     switch numStrR(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
         case '0001101'
             message(count) = 0;
