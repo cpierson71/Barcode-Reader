@@ -15,6 +15,11 @@ for k = 1:length(modCode)
     end
 end
 
+if isempty(modCode)
+    message = 'Error: Empty modCode';
+    return
+end
+
 startIdx = strfind(numStr,'010');
 startIdx = min(startIdx);
 numStr = numStr(startIdx+3:end-3); %Trim start and end markers
@@ -70,29 +75,31 @@ end
 %% Right numerical digit
 for k = 1:(midIdx/digitLength)
     count = count + 1;
-    switch numStrR(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
-        case '0001101'
-            message(count) = 0;
-        case '0011001'
-            message(count) = 1;
-        case '0010011'
-            message(count) = 2;
-        case '0111101'
-            message(count) = 3;
-        case '0100011'
-            message(count) = 4;
-        case '0110001'
-            message(count) = 5;
-        case '0101111'
-            message(count) = 6;
-        case '0111011'
-            message(count) = 7;
-        case '0110111'
-            message(count) = 8;
-        case '0001011'
-            message(count) = 9;
-        otherwise
-            message(count) = NaN;
+    if (digitLength*(k-1) + digitLength) <= length(numStrR)
+        switch numStrR(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
+            case '0001101'
+                message(count) = 0;
+            case '0011001'
+                message(count) = 1;
+            case '0010011'
+                message(count) = 2;
+            case '0111101'
+                message(count) = 3;
+            case '0100011'
+                message(count) = 4;
+            case '0110001'
+                message(count) = 5;
+            case '0101111'
+                message(count) = 6;
+            case '0111011'
+                message(count) = 7;
+            case '0110111'
+                message(count) = 8;
+            case '0001011'
+                message(count) = 9;
+            otherwise
+                message(count) = NaN;
+        end
     end
 end
 
