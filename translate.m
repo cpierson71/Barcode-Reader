@@ -1,14 +1,10 @@
 function message = translate(alignedCode)
-
 message = [];
 count = 0;
 digitLength = 7;
 middleLength = 5;
 
 modCode = alignedCode(1,:);
-% if modCode(1) == 1
-%    modCode = modCode(2:end); 
-% end
 
 for k = 1:length(modCode)
     numStr = num2str(modCode);
@@ -19,11 +15,16 @@ for k = 1:length(modCode)
     end
 end
 
+if isempty(modCode)
+    message = 'Error: Empty modCode';
+    return
+end
+
 startIdx = strfind(numStr,'010');
 startIdx = min(startIdx);
-numStr = numStr(startIdx+3:end-3);
+numStr = numStr(startIdx+3:end-3); %Trim start and end markers
 
-% modCode = modCode(4:end-3); %Trim start and end markers
+
 N = length(numStr);
 
 idx = strfind(numStr,'10101');
@@ -39,16 +40,6 @@ for k = 1:length(idx)
         midIdx = idx(k);
     end
 end
-
-% % Remove spaces from string
-% for k = 1:length(modCode)
-%     numStr = num2str(modCode);
-%     for j = length(numStr):-1:1
-%         if (numStr(j) == ' ')
-%             numStr(j) = [];
-%         end
-%     end
-% end
 
 numStrR = numStr(midIdx+5:end);
 
@@ -81,36 +72,34 @@ for k = 1:(midIdx/digitLength)
     end
 end
 
-length(numStrR)
-
 %% Right numerical digit
 for k = 1:(midIdx/digitLength)
     count = count + 1;
-%     digitLength*(k-1)+1
-    digitLength*(k-1) + digitLength
-    switch numStrR(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
-        case '0001101'
-            message(count) = 0;
-        case '0011001'
-            message(count) = 1;
-        case '0010011'
-            message(count) = 2;
-        case '0111101'
-            message(count) = 3;
-        case '0100011'
-            message(count) = 4;
-        case '0110001'
-            message(count) = 5;
-        case '0101111'
-            message(count) = 6;
-        case '0111011'
-            message(count) = 7;
-        case '0110111'
-            message(count) = 8;
-        case '0001011'
-            message(count) = 9;
-        otherwise
-            message(count) = NaN;
+    if (digitLength*(k-1) + digitLength) <= length(numStrR)
+        switch numStrR(digitLength*(k-1)+1:digitLength*(k-1) + digitLength)
+            case '0001101'
+                message(count) = 0;
+            case '0011001'
+                message(count) = 1;
+            case '0010011'
+                message(count) = 2;
+            case '0111101'
+                message(count) = 3;
+            case '0100011'
+                message(count) = 4;
+            case '0110001'
+                message(count) = 5;
+            case '0101111'
+                message(count) = 6;
+            case '0111011'
+                message(count) = 7;
+            case '0110111'
+                message(count) = 8;
+            case '0001011'
+                message(count) = 9;
+            otherwise
+                message(count) = NaN;
+        end
     end
 end
 
